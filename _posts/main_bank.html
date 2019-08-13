@@ -1,0 +1,474 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Bank Main</title>
+  <link rel="stylesheet" type="text/css" href="./all.min.css">
+  <link rel="stylesheet" type="text/css" href="./style.css">
+
+  <script src="./jquery-3.3.1.min.js"></script>
+</head>
+<body class="hana-body">
+  <div class="hana-wrap">
+    <div class="header-wrap">
+
+      <!--header : component-->
+      <div class="hana-header-body">
+        <header class="hana-header">
+
+          <div class="hd-col title-section">
+            <h1 class="title">KEB하나은행 <span class="sub">종합실적</span></h1>
+          </div>
+
+          <div class="center-section">
+
+            <div class="control-box">
+
+              <div class="hana-btn-group" onclick="activeBtnGroup(event)">
+                <button class="active">월</button>
+                <button>분기</button>
+                <button>반기</button>
+                <button>연</button>
+              </div>
+
+              <div class="date-picker-box">
+                <button id="js-hanaDatePrev"><i class="fa fa-angle-left"></i></button>
+                <span class="date"><span id="hana-date">2018-09</span></span>
+                <button id="js-hanaDateNext"><i class="fa fa-angle-right"></i></button>
+              </div>
+            </div>
+
+          </div>
+
+          <div class="hd-col menu-box">
+            <button class="btn-all-menu" onclick="menuOpen();"><i class="fa fa-bars"></i>전체메뉴</button>
+          </div>
+
+        </header>
+      </div>
+      <!--//header : component-->
+
+    </div>
+    <div class="content-wrap">
+
+      <div class="hana-content main-content total-main flex-col">
+
+        <ul class="total-main-top">
+          <li>
+            <a class="total-link-item sender" onclick="moveMap('리퍼럴 실적(p19)')">
+              <div>
+                영업그룹별 <br /> <span>소개하는 실적</span> 상세보기
+              </div>
+            </a>
+          </li>
+          <li>
+            <a class="total-link-item receiver" onclick="moveMap('리퍼리 실적(42p)')">
+              <div>
+                <span>소개받는 실적</span><br /> 상세보기
+              </div>
+            </a>
+          </li>
+          <li>
+            <a class="total-link-item process" onclick="moveMap('콜라보 프로세스(p30)')">
+              <div>
+                <span>콜라보 프로세스</span><br /> 상세보기
+              </div>
+            </a>
+          </li>
+        </ul>
+
+        <div class="total-main-body">
+          <div class="shadow-box">
+
+            <div class="hana-tab-panel">
+              <ul class="hana-tabs tabs-full">
+                <li class="tab active" data-tabId="tab01"><a onclick="switchTab('tab01')">하나금융투자, 하나저축은행, 하나캐피탈</a></li>
+                <li class="tab " data-tabId="tab02"><a onclick="switchTab('tab02')">하나카드, 하나생명, 하나자산신탁</a></li>
+              </ul>
+
+              <div class="hana-tab-content-wrap">
+                <div class="hana-tab-content relative">
+                  <div class="flex-col" style="height: 100%;">
+                    <div class="flow-box">
+                      <div class="arrow-box">
+                        <div class="arrow receiver">
+                          다른 관계사에서 <span>소개받는 실적</span>
+                          <div class="arrow-triangle"></div>
+                        </div>
+                      </div>
+                      <div class="arrow-box">
+                        <div class="arrow sender">
+                          다른 관계사로 <span>소개하는 실적</span>
+                          <div class="arrow-triangle"></div>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div class="total-chart-wrap">
+<!--                      <div class="title-box left">
+
+                        <div class="company-box">
+                          <div class="item-box company">하나<br/>금융<br/>투자</div>
+                          <div class="item-col">
+                            <div class="item-box">리퍼럴</div>
+                            <div class="item-box">IB연계영업</div>
+                            <div class="item-box">증권연계계좌</div>
+                          </div>
+                        </div>
+
+                        <div class="company-box">
+                          <div class="item-box company">하나<br/>저축<br/>은행</div>
+                          <div class="item-col">
+                            <div class="item-box">저축은행<br/>여신연계</div>
+                          </div>
+                        </div>
+
+                        <div class="company-box">
+                          <div class="item-box company">하나<br/>캐피탈</div>
+                          <div class="item-col">
+                            <div class="item-box">캐피탈<br/>여신연계</div>
+                            <div class="item-box">오토금융</div>
+                          </div>
+                        </div>
+
+                      </div>-->
+                      <div class="chart-box" id="sankeyReceive"></div>
+                      <div class="total-info-box">
+                        <section class="info-box">
+                          <h1 class="title">KEB하나은행</h1>
+                          <div class="item-box receiver">
+                            <h2>소개받은 실적</h2>
+                            <div class="num-box"><span>1,234</span> 억원 <span class="num">123</span> 건</div>
+                          </div>
+                          <div class="item-box sender">
+                            <h2>소개하는 실적</h2>
+                            <div class="num-box"><span>2,234</span> 억원 <span class="num">323</span> 건</div>
+                          </div>
+                        </section>
+                      </div>
+                      <div class="chart-box" id="sankeySend"></div>
+<!--                      <div class="title-box right">
+
+                        <div class="company-box">
+                          <div class="item-col">
+                            <div class="item-box">리퍼럴</div>
+                            <div class="item-box">IB연계영업</div>
+                            <div class="item-box">증권연계계좌</div>
+                          </div>
+                          <div class="item-box company">하나<br/>금융<br/>투자</div>
+                        </div>
+
+                        <div class="company-box">
+                          <div class="item-col">
+                            <div class="item-box">저축은행<br/>여신연계</div>
+                          </div>
+                          <div class="item-box company">하나<br/>저축<br/>은행</div>
+                        </div>
+
+                        <div class="company-box">
+                          <div class="item-col">
+                            <div class="item-box">캐피탈<br/>여신연계</div>
+                            <div class="item-box">오토금융</div>
+                          </div>
+                          <div class="item-box company">하나<br/>캐피탈</div>
+                        </div>
+	
+                      </div>					-->
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+          </div>
+        </div>
+
+      </div>
+
+    </div>
+  </div>
+
+  <!--modal all menu-->
+  <div class="modal-wrap" id="ModalMenuWrap" style="display: none">
+    <div class="modal-flex content-center">
+      <div class="modal-dimed" onclick="menuClose();"></div>
+      <div class="modal-box all-menu">
+        <button class="modal-close" onclick="menuClose();"></button>
+        <div class="all-menu-box">
+          <a class="menu-title-box all-menu">
+            <h1 class="title">하나금융그룹 <span class="sub">콜라보 현황</span></h1>
+          </a>
+          <div class="menu-item-box">
+            <div class="item-row">
+
+              <div class="menu-item">
+                <a class="menu-title-box">
+                  <h1 class="title">KEB하나은행</h1>
+                </a>
+                <ul class="menu-sub-box">
+                  <li><a href="">리퍼럴&리퍼리-전체</a></li>
+                  <li><a href="">리퍼럴&리퍼리-영업그룹</a></li>
+                  <li><a href="">리퍼럴&리퍼리-영업본부</a></li>
+                  <li><a href="">리퍼럴&리퍼리-콜라보그룹</a></li>
+                  <li><a href="">콜라보 프로세스</a></li>
+                </ul>
+              </div>
+
+              <div class="menu-item">
+                <a class="menu-title-box">
+                  <h1 class="title">하나금융투자</h1>
+                </a>
+                <ul class="menu-sub-box">
+                  <li><a href="">리퍼럴&리퍼리-전체</a></li>
+                  <li><a href="">리퍼럴&리퍼리-본부</a></li>
+                  <li><a href="">리퍼럴&리퍼리-지점</a></li>
+                  <li><a href="">콜라보 프로세스</a></li>
+                </ul>
+              </div>
+
+              <div class="menu-item">
+                <a class="menu-title-box">
+                  <h1 class="title">하나캐피탈</h1>
+                </a>
+                <ul class="menu-sub-box">
+                  <li><a href="">리퍼럴&리퍼리-전체</a></li>
+                  <li><a href="">리퍼럴&리퍼리-본부</a></li>
+                  <li><a href="">리퍼럴&리퍼리-지점</a></li>
+                  <li><a href="">콜라보 프로세스</a></li>
+                </ul>
+              </div>
+
+              <div class="menu-item">
+                <a class="menu-title-box">
+                  <h1 class="title">하나저축은행</h1>
+                </a>
+                <ul class="menu-sub-box">
+                  <li><a href="">리퍼럴&리퍼리-전체</a></li>
+                  <li><a href="">리퍼럴&리퍼리-지점</a></li>
+                  <li><a href="">콜라보 프로세스</a></li>
+                </ul>
+              </div>
+
+            </div>
+            <div class="item-row">
+
+              <div class="menu-item">
+                <a class="menu-title-box">
+                  <h1 class="title">하나카드</h1>
+                </a>
+                <ul class="menu-sub-box">
+                  <li><a href="">리퍼럴&리퍼리-전체</a></li>
+                  <li><a href="">콜라보 현황 그래프</a></li>
+                </ul>
+              </div>
+
+              <div class="menu-item">
+                <a class="menu-title-box">
+                  <h1 class="title">하나생명</h1>
+                </a>
+                <ul class="menu-sub-box">
+                  <li><a href="">리퍼럴&리퍼리-전체</a></li>
+                  <li><a href="">콜라보 현황 그래프</a></li>
+                  <li><a href="">은행별 비교 그래프</a></li>
+                </ul>
+              </div>
+
+              <div class="menu-item">
+                <a class="menu-title-box">
+                  <h1 class="title">하나자산신탁</h1>
+                </a>
+                <ul class="menu-sub-box">
+                  <li><a href="">리퍼럴&리퍼리-전체</a></li>
+                </ul>
+              </div>
+
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="./d3.js"></script>
+  <script src="./sankey.js"></script>
+  <script src="./common.js"></script>
+  <script>
+
+	sample = [["02", "금융투자", "리퍼럴","134"],["02", "금융투자", "IB연계영업", "434"],["02", "금융투자", "증권연계계좌", "213"],
+	         ["02", "저축은행", "저축은행 여신연계", "23"],["02", "캐피탈", "캐피탈 여신연계", "58"],["02", "캐피탈", "오토금융", "9"]]
+    var colors = ["#4282b1", "#56327b", "#4b5c98", "#4186b4", "#3aabbd", "#4ad4ce", "#6ce2ac"];
+
+    var colorIndex = 0;
+	
+	var nodesObject = new Object();
+	var nodesArray = new Array();
+	
+	var linksObject = new Object();
+	var linksArray = new Array();	
+	for(var i =0; i< sample.length; i++){
+		//console.log(sample[i][0]);
+		//console.log(sample[i][1]);
+		//console.log(sample[i][2]);
+		//console.log(sample[i][3]);
+		
+		nodesObject = new Object();
+		//nodesObject.code = sample[i][0];
+		nodesObject.company = sample[i][1];
+		nodesObject.name = sample[i][2];
+		nodesObject.fill = colors[colorIndex++ % colors.length];
+		nodesArray.push(nodesObject);
+		
+		linksObject = new Object();
+		linksObject.source = i;
+		linksObject.target = 0
+		linksObject.value = sample[i][3];
+		
+		linksArray.push(linksObject);
+	}
+		
+	var data1 = new Object();
+	data1.nodes = nodesArray;
+	data1.links = linksArray;
+	console.log("nodes====>"+JSON.stringify(data1));
+    
+
+    var data = [ //colors[colorIndex++ % colors.length]
+      {"nodes":[
+          {"name":"", "company":"은행", "fill": colors[0]},
+          {"name":"리퍼럴", "company":"금융투자", "fill": colors[1]},
+          {"name":"IB연계영업", "company":"금융투자", "fill": colors[1]},
+          {"name":"증권연계계좌", "company":"금융투자", "fill": colors[1]},
+          {"name":"저축은행 여신연계", "company":"저축은행", "fill": colors[3]},
+          {"name":"캐피탈 여신연계", "company":"캐피탈", "fill": colors[5]},
+          {"name":"오토금융", "company":"캐피탈", "fill": colors[5]},
+		  {"name":"금융투자", "company":"금융투자", "fill": colors[1]},
+		  {"name":"저축은행", "company":"저축은행", "fill": colors[3]},
+		  {"name":"캐피탈", "company":"캐피탈", "fill": colors[5]},
+        ],
+        "links":[
+          {"source": 1, "target": 0, "value": 134},
+          {"source": 2, "target": 0, "value": 434},
+          {"source": 3, "target": 0, "value": 213},
+          {"source": 4, "target": 0, "value": 23},
+          {"source": 5, "target": 0, "value": 58},
+          {"source": 6, "target": 0, "value": 9},
+		  {"source": 7, "target": 1, "value": 134},
+		  {"source": 7, "target": 2, "value": 434},
+		  {"source": 7, "target": 3, "value": 213},
+		  {"source": 8, "target": 4, "value": 23},
+		  {"source": 9, "target": 5, "value": 58},
+		  {"source": 9, "target": 6, "value": 9},
+        ]},
+
+      {"nodes":[
+          {"name":"", "company":"은행", "fill": colors[0]},
+          {"name":"리퍼럴", "company":"금융투자", "fill": colors[1]},
+          {"name":"IB연계영업", "company":"금융투자", "fill": colors[1]},
+          {"name":"증권연계계좌", "company":"금융투자", "fill": colors[1]},
+          {"name":"저축은행 여신연계", "company":"저축은행", "fill": colors[3]},
+          {"name":"캐피탈 여신연계", "company":"캐피탈", "fill": colors[5]},
+          {"name":"오토금융", "company":"캐피탈", "fill": colors[5]},
+		  {"name":"금융투자", "company":"금융투자", "fill": colors[1]},
+		  {"name":"저축은행", "company":"저축은행", "fill": colors[3]},
+		  {"name":"캐피탈", "company":"캐피탈", "fill": colors[5]},
+        ],
+        "links":[
+          {"source": 0, "target": 1, "value": 20},
+          {"source": 0, "target": 2, "value": 40},
+          {"source": 0, "target": 3, "value": 20},
+          {"source": 0, "target": 4, "value": 10},
+          {"source": 0, "target": 5, "value": 6},
+          {"source": 0, "target": 6, "value": 2},
+		  {"source": 1, "target": 7, "value": 20},
+		  {"source": 2, "target": 7, "value": 40},
+		  {"source": 3, "target": 7, "value": 20},
+		  {"source": 4, "target": 8, "value": 10},
+		  {"source": 5, "target": 9, "value": 6},
+		  {"source": 6, "target": 9, "value": 2},
+        ]}
+    ];
+
+    var sankeyChart = function(domId, data){
+
+      var margin = {top: 20, left: 0, bottom: 20, right: 0},
+        viewBox = document.getElementById(domId),
+        width = viewBox.offsetWidth,
+        height = viewBox.offsetHeight - margin.top - margin.bottom;
+
+      var formatNumber = d3.format(",.0f"),
+        format = function(d) { return formatNumber(d); };
+
+      var drag = d3.drag()
+        .on("start", function() { this.parentNode.appendChild(this); })
+        .on("drag", dragmove);
+
+      var svg = d3.select("#"+domId).append("svg")
+        .attr("width", '100%')
+        .attr("height", '100%')
+        .attr('viewBox','0 0 '+width+' '+height)
+        .append("g");
+
+      var sankey = d3.sankey()
+        .nodeWidth(20)
+        .nodePadding(5)
+        .size([width, height]);
+
+      var path = sankey.link();
+
+      sankey
+        .nodes(data.nodes)
+        .links(data.links)
+        .layout(3);
+
+      var link = svg.append("g").selectAll(".link")
+        .data(data.links)
+        .enter().append("path")
+        .attr("class", "link")
+        .attr("d", path)
+        .style("stroke-width", function(d) { return Math.max(1, d.dy); })
+        .sort(function(a, b) { return b.dy - a.dy; });
+
+      link.append("title")
+        .text(function(d) { return d.source.name + " → " + d.target.name + "\n" + format(d.value); });
+
+      var node = svg.append("g").selectAll(".node")
+        .data(data.nodes)
+        .enter().append("g")
+        .attr("class", "node")
+        .attr("transform", function(d) { return "translate(" + d.x + "," + d.y + ")"; })
+        .call(drag);
+
+      node.append("rect")
+        .attr("height", function(d) { return d.dy; })
+        .attr("width", sankey.nodeWidth())
+        .attr("rx", 3)
+        .attr("ry", 3)
+        .style("fill", function(d) { return d.fill; })
+        .append("title")
+        .text(function(d) { return d.name + "\n" + format(d.value); });
+
+      node.append("text")
+        .attr("x", -6)
+        .attr("y", function(d) { return d.dy / 2; })
+        .attr("dy", ".35em")
+        .attr("text-anchor", "end")
+        .attr("transform", null)
+        .text(function(d) { return d.name; })
+        .filter(function(d) { return d.x < width / 2; })
+        .attr("x", 6 + sankey.nodeWidth())
+        .attr("text-anchor", "start");
+
+      function dragmove(d) {
+        d3.select(this).attr("transform", "translate(" + d.x + "," + (d.y = Math.max(0, Math.min(height - d.dy, d3.event.y))) + ")");
+        sankey.relayout();
+        link.attr("d", path);
+      }
+    };
+
+    sankeyChart("sankeyReceive", data[0]);
+    sankeyChart("sankeySend", data[1]);
+
+
+  </script>
+</body>
+</html>
